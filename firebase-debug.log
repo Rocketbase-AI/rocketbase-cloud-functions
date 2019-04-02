@@ -1,0 +1,241 @@
+[debug] [2019-04-02T14:51:27.894Z] ----------------------------------------------------------------------
+[debug] [2019-04-02T14:51:27.896Z] Command:       /usr/local/Cellar/node/11.12.0/bin/node /Users/heiki/Development/rockethub/node_modules/.bin/firebase deploy
+[debug] [2019-04-02T14:51:27.896Z] CLI Version:   6.5.0
+[debug] [2019-04-02T14:51:27.896Z] Platform:      darwin
+[debug] [2019-04-02T14:51:27.896Z] Node Version:  v11.12.0
+[debug] [2019-04-02T14:51:27.898Z] Time:          Tue Apr 02 2019 16:51:27 GMT+0200 (Central European Summer Time)
+[debug] [2019-04-02T14:51:27.898Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-04-02T14:51:27.910Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-04-02T14:51:27.910Z] > authorizing via signed-in user
+[debug] [2019-04-02T14:51:27.910Z] [iam] checking project rockethub for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasehosting.sites.update","firebaserules.releases.create","firebaserules.releases.update","firebaserules.rulesets.create"]
+[debug] [2019-04-02T14:51:27.912Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2019-04-02T14:51:27.912Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2019-04-02T14:51:28.075Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-02T14:51:28.098Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/rockethub:testIamPermissions  
+
+[debug] [2019-04-02T14:51:28.955Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-02T14:51:28.957Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/rockethub  
+ 
+[debug] [2019-04-02T14:51:29.231Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'rockethub'...
+[info] 
+[info] i  deploying storage, firestore, functions, hosting
+[info] Running command: npm run lint-functions
+[info] Running command: npm run lint-app
+[info] Running command: npm run typecheck-app
+[info] Running command: npm run build-functions
+[info] Running command: npm run build-app
+[info] Running command: npm run copy-deps
+[info] Running command: npm run install-deps
+[info] ✔  functions: Finished running predeploy script.
+[info] Running command: npm run build-public
+[info] ✔  hosting: Finished running predeploy script.
+[debug] [2019-04-02T14:52:16.898Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/rockethub  
+ 
+[debug] [2019-04-02T14:52:18.136Z] <<< HTTP RESPONSE 200
+[info] i  storage: checking storage.rules for compilation errors...
+[debug] [2019-04-02T14:52:18.138Z] >>> HTTP REQUEST POST https://firebaserules.googleapis.com/v1/projects/rockethub:test  
+
+[debug] [2019-04-02T14:52:18.398Z] <<< HTTP RESPONSE 200
+[info] ✔  storage: rules file storage.rules compiled successfully
+[info] i  firestore: checking firestore.rules for compilation errors...
+[info] i  firestore: reading indexes from firestore.indexes.json...
+[debug] [2019-04-02T14:52:18.403Z] >>> HTTP REQUEST POST https://firebaserules.googleapis.com/v1/projects/rockethub:test  
+
+[debug] [2019-04-02T14:52:19.147Z] <<< HTTP RESPONSE 200
+[info] ✔  firestore: rules file firestore.rules compiled successfully
+[debug] [2019-04-02T14:52:19.151Z] > [functions] package.json contents: {
+  "name": "rockethub",
+  "version": "1.0.0",
+  "description": "RocketHub web application",
+  "engines": {
+    "node": "8"
+  },
+  "scripts": {
+    "dev": "next src/app",
+    "preserve": "npm run build-public && npm run build-functions && npm run build-app && npm run copy-deps && npm run install-deps",
+    "serve": "cross-env NODE_ENV=production firebase serve",
+    "deploy": "firebase deploy",
+    "clean": "rimraf \"build/functions\" && rimraf \"build/public\"",
+    "build-app": "next build \"src/app\"",
+    "build-public": "cpx \"src/public/**/*.*\" \"build/public\" -C",
+    "build-functions": "tsc --project src/functions",
+    "lint-app": "tslint --project src/app",
+    "typecheck-app": "tsc --project src/app",
+    "lint-functions": "tslint --project src/functions",
+    "copy-deps": "cpx \"*{package.json,package-lock.json,yarn.lock}\" \"build/functions\" -C",
+    "install-deps": "cd \"build/functions\" && npm i"
+  },
+  "private": true,
+  "keywords": [
+    "firebase",
+    "next",
+    "typescript"
+  ],
+  "author": "Heiki",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.17",
+    "@fortawesome/free-regular-svg-icons": "^5.8.1",
+    "@fortawesome/free-solid-svg-icons": "^5.8.1",
+    "@fortawesome/react-fontawesome": "^0.1.4",
+    "bulma": "^0.7.4",
+    "dotenv": "^7.0.0",
+    "firebase": "^5.9.2",
+    "firebase-admin": "^7.2.0",
+    "firebase-functions": "^2.2.1",
+    "isomorphic-unfetch": "^3.0.0",
+    "js-cookie": "^2.2.0",
+    "next": "^8.0.3",
+    "next-cookies": "^1.1.2",
+    "react": "^16.8.5",
+    "react-dom": "^16.8.5",
+    "recompose": "^0.30.0",
+    "redux": "^4.0.1"
+  },
+  "devDependencies": {
+    "@types/next": "^8.0.3",
+    "@types/react": "^16.8.8",
+    "@types/react-dom": "^16.8.3",
+    "@zeit/next-sass": "^1.0.1",
+    "@zeit/next-typescript": "^1.1.1",
+    "cpx": "^1.5.0",
+    "cross-env": "^5.2.0",
+    "firebase-tools": "^6.5.0",
+    "node-sass": "^4.11.0",
+    "rimraf": "^2.6.3",
+    "tslint": "^5.14.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-react": "^4.0.0",
+    "typescript": "^3.2.2"
+  }
+}
+[info] i  functions: ensuring necessary APIs are enabled...
+[debug] [2019-04-02T14:52:19.152Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/cloudfunctions.googleapis.com/projectSettings/rockethub?view=CONSUMER_VIEW  
+ 
+[debug] [2019-04-02T14:52:19.153Z] >>> HTTP REQUEST GET https://servicemanagement.googleapis.com/v1/services/runtimeconfig.googleapis.com/projectSettings/rockethub?view=CONSUMER_VIEW  
+ 
+[debug] [2019-04-02T14:52:20.564Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-02T14:52:20.671Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: all necessary APIs are enabled
+[debug] [2019-04-02T14:52:20.672Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/rockethub  
+ 
+[debug] [2019-04-02T14:52:21.595Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-02T14:52:21.595Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/998507827419:getServerAppConfig  
+ 
+[debug] [2019-04-02T14:52:21.832Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-02T14:52:21.835Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/rockethub/versions  
+
+[debug] [2019-04-02T14:52:23.271Z] <<< HTTP RESPONSE 200
+[info] i  storage: uploading rules storage.rules...
+[debug] [2019-04-02T14:52:23.273Z] >>> HTTP REQUEST POST https://firebaserules.googleapis.com/v1/projects/rockethub/rulesets  
+
+[debug] [2019-04-02T14:52:24.240Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-02T14:52:24.240Z] [rules] created ruleset projects/rockethub/rulesets/49c911d3-cb3a-48a7-ba12-0a74d6e1b03b
+[info] i  firestore: uploading rules firestore.rules...
+[debug] [2019-04-02T14:52:24.243Z] >>> HTTP REQUEST POST https://firebaserules.googleapis.com/v1/projects/rockethub/rulesets  
+
+[debug] [2019-04-02T14:52:24.244Z] >>> HTTP REQUEST GET https://firestore.googleapis.com/v1beta2/projects/rockethub/databases/(default)/collectionGroups/-/indexes  
+ 
+[debug] [2019-04-02T14:52:24.486Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-02T14:52:24.487Z] >>> HTTP REQUEST GET https://firestore.googleapis.com/v1beta2/projects/rockethub/databases/(default)/collectionGroups/-/fields?filter=indexConfig.usesAncestorConfig=false  
+ 
+[debug] [2019-04-02T14:52:24.680Z] <<< HTTP RESPONSE 200
+[info] ✔  firestore: deployed indexes in firestore.indexes.json successfully
+[debug] [2019-04-02T14:52:25.143Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-02T14:52:25.143Z] [rules] created ruleset projects/rockethub/rulesets/9049e0c5-3bf1-4d84-8ba6-e7a736d9d179
+[info] i  functions: preparing build/functions directory for uploading...
+[debug] [2019-04-02T14:52:25.147Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/rockethub/configs  
+ 
+[debug] [2019-04-02T14:52:25.419Z] <<< HTTP RESPONSE 200
+[info] i  functions: packaged build/functions (7.53 MB) for uploading
+[debug] [2019-04-02T14:52:28.397Z] >>> HTTP REQUEST POST https://cloudfunctions.googleapis.com/v1/projects/rockethub/locations/us-central1/functions:generateUploadUrl  
+ 
+[debug] [2019-04-02T14:52:28.860Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-02T14:52:28.861Z] >>> HTTP REQUEST PUT https://storage.googleapis.com/gcf-upload-us-central1-28b81fda-5f21-454c-a7c3-d88a6799cf05/0ea29878-e6ad-47ea-ba12-e91054a280e3.zip?GoogleAccessId=service-998507827419@gcf-admin-robot.iam.gserviceaccount.com&Expires=1554218548&Signature=rjnelYxu5D2okm5V%2F0M3ea75uzTXjCHLTyNCBiB3Wq5aOaczih3%2FCyY34xW7LrMIuwxL954GFLbuHme7WQf0Bli5VA7MLN8UXKbn6SpmPETM%2FI6ZOuUUHsVNs3eqab6AP8R95tf8Zq9%2BoenDBPL9KK5evx8zEdxX8FiIkTzVDOWSNkkNO2tQHMCqTTY0Jop8lJUR8u1hrSx7iK87Vn8JwmmFLuDpdrgdw1ITPxYHsWd3YpjIDkoJmTvY3q8RzeMZAlz2SpesAY6977%2BV8Yrcs6KUXpbiKr0f78rKjuVTAYpWpWj9mFyTwQInbX%2BZ3C31utb%2FcfEEm1YGLJ9hCbvQfw%3D%3D  
+
+[debug] [2019-04-02T14:52:31.214Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: build/functions folder uploaded successfully
+[info] i  hosting[rockethub]: beginning deploy...
+[info] i  hosting[rockethub]: found 1 files in build/public
+[debug] [2019-04-02T14:52:31.224Z] [hosting] hash cache [YnVpbGQvcHVibGlj] load error: lines is not defined
+[debug] [2019-04-02T14:52:31.230Z] [hosting] hash cache [YnVpbGQvcHVibGlj] stored for 1 files
+[debug] [2019-04-02T14:52:31.230Z] [hosting][hash queue][FINAL]
+[debug] [2019-04-02T14:52:31.230Z] >>> HTTP REQUEST POST https://firebasehosting.googleapis.com/v1beta1/sites/rockethub/versions/0f8e66bb6695b237:populateFiles  
+ <request body omitted>
+[debug] [2019-04-02T14:52:32.299Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-02T14:52:32.299Z] [hosting][populate queue][FINAL]
+[debug] [2019-04-02T14:52:32.299Z] [hosting] uploads queued: 0
+[debug] [2019-04-02T14:52:32.299Z] [hosting][upload queue][FINAL]
+[info] ✔  hosting[rockethub]: file upload complete
+[debug] [2019-04-02T14:52:32.300Z] [hosting] deploy completed after 1084ms
+[debug] [2019-04-02T14:52:32.301Z] [rules] releasing firebase.storage/rockethub.appspot.com with ruleset projects/rockethub/rulesets/49c911d3-cb3a-48a7-ba12-0a74d6e1b03b
+[debug] [2019-04-02T14:52:32.301Z] >>> HTTP REQUEST PATCH https://firebaserules.googleapis.com/v1/projects/rockethub/releases/firebase.storage/rockethub.appspot.com  
+
+[debug] [2019-04-02T14:52:33.265Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-02T14:52:33.266Z] [rules] updated release projects/rockethub/releases/firebase.storage/rockethub.appspot.com
+[info] ✔  storage: released rules storage.rules to firebase.storage/rockethub.appspot.com
+[debug] [2019-04-02T14:52:33.266Z] [rules] releasing cloud.firestore with ruleset projects/rockethub/rulesets/9049e0c5-3bf1-4d84-8ba6-e7a736d9d179
+[debug] [2019-04-02T14:52:33.266Z] >>> HTTP REQUEST PATCH https://firebaserules.googleapis.com/v1/projects/rockethub/releases/cloud.firestore  
+
+[debug] [2019-04-02T14:52:34.187Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-02T14:52:34.187Z] [rules] updated release projects/rockethub/releases/cloud.firestore
+[info] ✔  firestore: released rules firestore.rules to cloud.firestore
+[debug] [2019-04-02T14:52:34.189Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/projects/rockethub/locations/-/functions  
+ 
+[debug] [2019-04-02T14:52:34.613Z] <<< HTTP RESPONSE 200
+[info] i  functions: updating Node.js 8 function nextApp(us-central1)...
+[debug] [2019-04-02T14:52:34.617Z] Trigger is:  {"httpsTrigger":{}}
+[info] 
+The following functions are found in your project but do not exist in your local source code:
+	createInitialUserProfile(europe-west1)
+
+If you are renaming a function or changing its region, it is recommended that you create the new function first before deleting the old one to prevent event loss. For more info, visit https://firebase.google.com/docs/functions/manage-functions#modify
+
+[info] i  functions: deleting function createInitialUserProfile(europe-west1)...
+[debug] [2019-04-02T14:53:34.674Z] >>> HTTP REQUEST PATCH https://cloudfunctions.googleapis.com/v1/projects/rockethub/locations/us-central1/functions/nextApp {"updateMask":"sourceUploadUrl,name,labels,runtime,httpsTrigger"} 
+
+[debug] [2019-04-02T14:53:34.675Z] >>> HTTP REQUEST DELETE https://cloudfunctions.googleapis.com/v1/projects/rockethub/locations/europe-west1/functions/createInitialUserProfile  
+ 
+[debug] [2019-04-02T14:53:34.897Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-02T14:53:35.147Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-02T14:53:35.150Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/projects/rockethub/locations/-/functions  
+ 
+[debug] [2019-04-02T14:53:35.583Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-02T14:53:35.584Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/cm9ja2V0aHViL3VzLWNlbnRyYWwxL25leHRBcHAvbW1uWXoxWVNHbjA  
+ 
+[debug] [2019-04-02T14:53:35.585Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/cm9ja2V0aHViL2V1cm9wZS13ZXN0MS9jcmVhdGVJbml0aWFsVXNlclByb2ZpbGUvNFJma2RjWk9SdTA  
+ 
+[debug] [2019-04-02T14:53:35.755Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-02T14:53:35.868Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-02T14:53:37.755Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/cm9ja2V0aHViL2V1cm9wZS13ZXN0MS9jcmVhdGVJbml0aWFsVXNlclByb2ZpbGUvNFJma2RjWk9SdTA  
+ 
+[debug] [2019-04-02T14:53:37.873Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/cm9ja2V0aHViL3VzLWNlbnRyYWwxL25leHRBcHAvbW1uWXoxWVNHbjA  
+ 
+[debug] [2019-04-02T14:53:37.878Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-02T14:53:38.132Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-02T14:53:39.883Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/cm9ja2V0aHViL2V1cm9wZS13ZXN0MS9jcmVhdGVJbml0aWFsVXNlclByb2ZpbGUvNFJma2RjWk9SdTA  
+ 
+[debug] [2019-04-02T14:53:40.035Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-02T14:53:40.132Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/cm9ja2V0aHViL3VzLWNlbnRyYWwxL25leHRBcHAvbW1uWXoxWVNHbjA  
+ 
+[debug] [2019-04-02T14:53:40.382Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-02T14:53:42.040Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/cm9ja2V0aHViL2V1cm9wZS13ZXN0MS9jcmVhdGVJbml0aWFsVXNlclByb2ZpbGUvNFJma2RjWk9SdTA  
+ 
+[debug] [2019-04-02T14:53:42.206Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-02T14:53:42.383Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/cm9ja2V0aHViL3VzLWNlbnRyYWwxL25leHRBcHAvbW1uWXoxWVNHbjA  
+ 
+[debug] [2019-04-02T14:53:42.659Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-02T14:53:44.211Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/cm9ja2V0aHViL2V1cm9wZS13ZXN0MS9jcmVhdGVJbml0aWFsVXNlclByb2ZpbGUvNFJma2RjWk9SdTA  
+ 
+[debug] [2019-04-02T14:53:44.663Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/cm9ja2V0aHViL3VzLWNlbnRyYWwxL25leHRBcHAvbW1uWXoxWVNHbjA  
+ 
+[debug] [2019-04-02T14:53:45.191Z] <<< HTTP RESPONSE 200
+[info] ✔  functions[createInitialUserProfile(europe-west1)]: Successful delete operation. 
+[debug] [2019-04-02T14:53:45.302Z] <<< HTTP RESPONSE 200
+[debug] [2019-04-02T14:53:47.307Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/operations/cm9ja2V0aHViL3VzLWNlbnRyYWwxL25leHRBcHAvbW1uWXoxWVNHbjA  
+ 
+[debug] [2019-04-02T14:53:47.509Z] <<< HTTP RESPONSE 200

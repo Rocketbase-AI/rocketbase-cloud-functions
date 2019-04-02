@@ -1,0 +1,11 @@
+{
+  "extends": ["tslint:latest", "tslint-react", "tslint-config-prettier"],
+  "rules": {
+    "quotemark": [true, "double"],
+    "no-submodule-imports": false,
+    "no-console": false,
+    "jsx-no-lambda": false,
+    "interface-name": [true, "never-prefix"],
+    "member-access": false
+  }
+}

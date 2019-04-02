@@ -1,0 +1,32 @@
+{
+  "hosting": {
+    "public": "build/public",
+    "rewrites": [
+      {
+        "source": "**/**",
+        "function": "nextApp"
+      }
+    ],
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "predeploy": "npm run build-public"
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "functions": {
+    "source": "build/functions",
+    "predeploy": [
+      "npm run lint-functions",
+      "npm run lint-app",
+      "npm run typecheck-app",
+      "npm run build-functions",
+      "npm run build-app",
+      "npm run copy-deps",
+      "npm run install-deps"
+    ]
+  },
+  "storage": {
+    "rules": "storage.rules"
+  }
+}

@@ -1,0 +1,56 @@
+//Login and signup cards
+.wavy-login-card,
+.wavy-signup-card {
+  padding: 40px;
+  border-radius: 6px;
+  max-width: 400px;
+  margin: auto;
+  background-color: white;
+  border: 1px solid #ecf0f1;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+  h2 {
+    font-size: 22px;
+    margin-bottom: 40px;
+    font-weight: 700 !important;
+  }
+}
+.flex-card {
+  position: relative;
+  background-color: #fff;
+  border: 1px solid $smoke-white;
+  border-radius: 0.1875rem;
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  margin-bottom: 20px;
+  transition: all 0.5s;
+  &.secondary-card {
+    background: $secondary;
+    h2 {
+      color: $white !important;
+    }
+    .light-text {
+      color: $white !important;
+    }
+  }
+}
+.signup-context {
+    border: none !important;
+    border-radius: 6px;
+    .argument {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        text-align: left;
+        padding-top: 30px;
+        .icon i {
+            font-size: 2.4rem;
+            color: $white;
+        }
+        .argument-text {
+            margin-left: 22px;
+            color: $white;
+        }
+    }
+}
