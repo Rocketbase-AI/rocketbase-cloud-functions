@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next src/app",
-    "preserve": "npm run build-public && npm run build-functions && npm run build-app && npm run copy-deps && npm run install-deps",
+    "preserve": "npm run build && npm run copy-deps && npm run install-deps",
     "serve": "cross-env NODE_ENV=production firebase serve",
     "deploy": "firebase deploy",
     "clean": "rimraf \"build/functions\" && rimraf \"build/public\"",
@@ -18,7 +18,9 @@
     "typecheck-app": "tsc --project src/app",
     "lint-functions": "tslint --project src/functions",
     "copy-deps": "cpx \"*{package.json,package-lock.json,yarn.lock}\" \"build/functions\" -C",
-    "install-deps": "cd \"build/functions\" && npm i"
+    "install-deps": "cd \"build/functions\" && npm i",
+    "lint": "npm run lint-app && npm run lint-functions && npm run typecheck-app",
+    "build": "npm run build-public && npm run build-functions && npm run build-app"
   },
   "private": true,
   "keywords": [
@@ -30,16 +32,20 @@
   "license": "UNLICENSED",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.17",
+    "@fortawesome/free-brands-svg-icons": "^5.8.1",
     "@fortawesome/free-regular-svg-icons": "^5.8.1",
     "@fortawesome/free-solid-svg-icons": "^5.8.1",
     "@fortawesome/react-fontawesome": "^0.1.4",
     "bulma": "^0.7.4",
+    "cors": "^2.8.5",
     "dotenv": "^7.0.0",
     "firebase": "^5.9.2",
-    "firebase-admin": "^7.2.0",
+    "firebase-admin": "7.2.0",
     "firebase-functions": "^2.2.1",
     "isomorphic-unfetch": "^3.0.0",
     "js-cookie": "^2.2.0",
+    "mixpanel": "^0.10.2",
+    "moment": "^2.24.0",
     "next": "^8.0.3",
     "next-cookies": "^1.1.2",
     "react": "^16.8.5",
@@ -48,6 +54,7 @@
     "redux": "^4.0.1"
   },
   "devDependencies": {
+    "@types/js-cookie": "^2.2.2",
     "@types/next": "^8.0.3",
     "@types/react": "^16.8.8",
     "@types/react-dom": "^16.8.3",
