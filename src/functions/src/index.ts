@@ -108,7 +108,7 @@ export const saveNewModel = functions
       !version ||
       !folderName ||
       !modelFilePath ||
-      !isPrivate
+      typeof isPrivate === "undefined"
     ) {
       return res.status(400).send("Required request parameters missing.");
     }
@@ -121,7 +121,8 @@ export const saveNewModel = functions
       modelFilePath,
       private: isPrivate,
       version,
-      publishedDate: admin.firestore.Timestamp.fromDate(new Date()),
+      publicationDate: admin.firestore.Timestamp.fromDate(new Date()),
+      name: folderName,
     };
     let modelRef;
     try {
