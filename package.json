@@ -9,6 +9,7 @@
     "dev": "next src/app",
     "preserve": "npm run build && npm run copy-deps && npm run install-deps",
     "serve": "cross-env NODE_ENV=production firebase serve",
+    "serve:funcs": "npm run build-functions && firebase serve --only functions",
     "deploy": "firebase deploy",
     "clean": "rimraf \"build/functions\" && rimraf \"build/public\"",
     "build-app": "next build \"src/app\"",

@@ -46,13 +46,19 @@ export const getAvailableModels = functions
     if (req.method !== "GET") {
       return res.status(405).send(`${req.method} method not allowed.`);
     }
-    const { author, model, version } = req.query;
+    // TODO: check whether user is authenticated
+    const {
+      author,
+      model,
+      version,
+    }: { author: string; model: string; version: string } = req.query;
 
     if (!model || !author) {
       return res.status(400).send("Required request parameters missing.");
     }
     Mixpanel.track(MODELS_SELECTION_EVENT, { author, model, version });
     let modelSnapShot;
+    // TODO: check whether authorised user actually has permission to access model
     try {
       modelSnapShot = await db
         .collection(MODELS_COLLECTION_NAME)
@@ -62,7 +68,12 @@ export const getAvailableModels = functions
     } catch (e) {
       return res.status(500).send(`Internal database error.`);
     }
-    const allModels: any[] = modelSnapShot.docs.map(doc => doc.data());
+    let allModels: any[] = modelSnapShot.docs.map(doc => doc.data());
+    if (version) {
+      allModels = allModels.filter((modelDoc: any) => modelDoc.version === version);
+    } else {
+      allModels = allModels.filter((modelDoc: any) => modelDoc.isDefaultVersion);
+    }
     return res.status(200).json(allModels);
   });
 
@@ -93,6 +104,7 @@ export const saveNewModel = functions
     if (req.method !== "POST") {
       return res.status(405).send(`${req.method} method not allowed.`);
     }
+    // TODO: check whether user is authenticated
     const {
       author,
       model,
@@ -100,6 +112,13 @@ export const saveNewModel = functions
       folderName,
       modelFilePath,
       isPrivate,
+    }: {
+      author: string;
+      model: string;
+      version: string;
+      folderName: string;
+      modelFilePath: string;
+      isPrivate: boolean;
     } = req.body;
 
     if (
@@ -119,9 +138,10 @@ export const saveNewModel = functions
       framework: PYTORCH_FRAMEWORK,
       model,
       modelFilePath,
-      private: isPrivate,
+      isPrivate,
       version,
       publicationDate: admin.firestore.Timestamp.fromDate(new Date()),
+      isDefaultVersion: false,
       name: folderName,
     };
     let modelRef;
