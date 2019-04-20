@@ -57,7 +57,7 @@ export const getAvailableModels = functions
       modelSnapShot = await db
         .collection(MODELS_COLLECTION_NAME)
         .where("author", "==", author)
-        .where("slug", "==", model)
+        .where("model", "==", model)
         .get();
     } catch (e) {
       return res.status(500).send(`Internal database error.`);
