@@ -89,7 +89,7 @@ export const getUploadCredentials = functions
     const { token } = req.query;
 
     if (!token) {
-      return res.status(400).send("Required request parameters missing.");
+      return res.status(400).send("Authentication token missing.");
     }
     Mixpanel.track(GET_CREDENTIALS_EVENT, { token });
     return res.status(200).json(credentials);
