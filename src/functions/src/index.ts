@@ -9,8 +9,9 @@ import {
   MODELS_COLLECTION_NAME,
   MODELS_SELECTION_EVENT,
   MODEL_SAVE_EVENT,
-  PYTORCH_FRAMEWORK,
   GET_CREDENTIALS_EVENT,
+  USERNAME_FIELD,
+  ROCKET_NAME_FIELD,
 } from "./constants";
 import credentials from "./credentials";
 
@@ -48,31 +49,35 @@ export const getAvailableModels = functions
     }
     // TODO: check whether user is authenticated
     const {
-      author,
-      model,
-      version,
-    }: { author: string; model: string; version: string } = req.query;
+      username,
+      rocket,
+      label,
+    }: { username: string; rocket: string; label: string } = req.query;
 
-    if (!model || !author) {
+    if (!rocket || !username) {
       return res.status(400).send("Required request parameters missing.");
     }
-    Mixpanel.track(MODELS_SELECTION_EVENT, { author, model, version });
-    let modelSnapShot;
+    Mixpanel.track(MODELS_SELECTION_EVENT, { username, rocket, label });
+    let querySnapShot;
     // TODO: check whether authorised user actually has permission to access model
     try {
-      modelSnapShot = await db
+      querySnapShot = await db
         .collection(MODELS_COLLECTION_NAME)
-        .where("author", "==", author)
-        .where("model", "==", model)
+        .where(USERNAME_FIELD, "==", username)
+        .where(ROCKET_NAME_FIELD, "==", rocket)
         .get();
     } catch (e) {
       return res.status(500).send(`Internal database error.`);
     }
-    let allModels: any[] = modelSnapShot.docs.map(doc => doc.data());
-    if (version) {
-      allModels = allModels.filter((modelDoc: any) => modelDoc.version === version);
+    let allModels: any[] = querySnapShot.docs.map(doc => doc.data());
+    if (label) {
+      allModels = allModels.filter(
+        (modelDoc: any) => modelDoc.label === label,
+      );
     } else {
-      allModels = allModels.filter((modelDoc: any) => modelDoc.isDefaultVersion);
+      allModels = allModels.filter(
+        (modelDoc: any) => modelDoc.isDefaultVersion,
+      );
     }
     return res.status(200).json(allModels);
   });
@@ -135,7 +140,6 @@ export const saveNewModel = functions
     const newModel = {
       author,
       folderName,
-      framework: PYTORCH_FRAMEWORK,
       model,
       modelFilePath,
       isPrivate,
