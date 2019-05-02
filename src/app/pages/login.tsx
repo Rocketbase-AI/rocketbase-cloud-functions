@@ -1,3 +1,4 @@
+import Head from "next/head";
 import React, { Component } from "react";
 import { withFirebase } from "../components/Firebase";
 import Layout from "../components/HomeLayout";
@@ -6,6 +7,9 @@ import { SignUpLink } from "./signup";
 
 const SignInPage = () => (
   <Layout>
+    <Head>
+      <title>Login | RocketHub</title>
+    </Head>
     <SignInForm />
     <PasswordForgetLink />
     <SignUpLink />

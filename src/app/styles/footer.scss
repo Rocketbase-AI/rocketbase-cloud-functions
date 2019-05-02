@@ -6,7 +6,7 @@ footer.footer-light-medium {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    a {
+    .icon {
       color: $title-grey;
       margin: 0 5px;
       &:hover {

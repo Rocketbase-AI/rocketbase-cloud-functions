@@ -1,5 +1,6 @@
 import { faGift, faLock, faMagic } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Head from "next/head";
 import Link from "next/link";
 import Router from "next/router";
 import React, { Component } from "react";
@@ -11,6 +12,9 @@ import * as ROUTES from "../constants/routes";
 
 const SignUpPage = () => (
   <Layout>
+    <Head>
+      <title>Sign Up | RocketHub</title>
+    </Head>
     <SignUpForm />
   </Layout>
 );

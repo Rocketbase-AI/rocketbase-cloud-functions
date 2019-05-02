@@ -1,3 +1,5 @@
+import { faGitlab, faLinkedin } from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import * as ROUTES from "../constants/routes";
 
@@ -27,16 +29,16 @@ const Footer = () => {
               <div className="social-links">
                 <Link href={ROUTES.LANDING}>
                   <a>
-                    <span className="icon">
-                      <i className="fa fa-linkedin" />
-                    </span>
+                    <div className="icon">
+                      <FontAwesomeIcon icon={faGitlab} size="2x" />
+                    </div>
                   </a>
                 </Link>
                 <Link href={ROUTES.LANDING}>
                   <a>
-                    <span className="icon">
-                      <i className="fa fa-github" />
-                    </span>
+                    <div className="icon">
+                      <FontAwesomeIcon icon={faLinkedin} size="2x" />
+                    </div>
                   </a>
                 </Link>
               </div>

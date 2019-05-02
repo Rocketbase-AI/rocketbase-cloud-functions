@@ -1,6 +1,7 @@
 import cookie from "js-cookie";
 import nextCookie from "next-cookies";
 import App, { Container } from "next/app";
+import Head from "next/head";
 import Router from "next/router";
 import React from "react";
 import Firebase, { FirebaseContext } from "../components/Firebase";
@@ -28,7 +29,7 @@ class MyApp extends App<MyAppProps, any> {
     let pageProps = {};
 
     if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps(ctx);
+      pageProps = await Component.getInitialProps(ctx, firebase);
     }
 
     return { pageProps, userData };
@@ -73,6 +74,9 @@ class MyApp extends App<MyAppProps, any> {
     const { Component, pageProps, userData } = this.props;
     return (
       <Container>
+        <Head>
+          <title>RocketHub - Discover and test latest ML models</title>
+        </Head>
         <FirebaseContext.Provider value={firebase}>
           <AuthUserContext.Provider value={userData}>
             <Component {...pageProps} />

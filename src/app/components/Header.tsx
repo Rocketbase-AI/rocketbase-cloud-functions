@@ -1,4 +1,3 @@
-import Head from "next/head";
 import Link from "next/link";
 import * as ROUTES from "../constants/routes";
 import { AuthUserContext } from "./Session";
@@ -19,12 +18,16 @@ const Navigation = () => (
 
 const NavigationAuth = ({ authUser }) => (
   <div className="navbar-end">
+    <div className="navbar-item">
     <Link prefetch={true} href={ROUTES.HOME}>
-      <a className="navbar-item">Dashboard</a>
+      <a>Dashboard</a>
     </Link>
+    </div>
+    <div className="navbar-item">
     <Link href={ROUTES.ACCOUNT}>
-      <a className="navbar-item">{authUser.username}'s Account</a>
+      <a>{authUser.username}'s Account</a>
     </Link>
+    </div>
     <SignOutButton />
   </div>
 );
@@ -61,10 +64,6 @@ const NavigationNonAuth = () => (
 
 const Header = () => (
   <div className="hero-head">
-    <Head>
-      <title>RocketHub - Discover and test latest ML models</title>
-      <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-    </Head>
     <header>
       <div className="container">
         <nav
@@ -74,7 +73,7 @@ const Header = () => (
         >
           <div className="navbar-brand">
             <Link href="/">
-              <a className="is-size-4 navbar-item">RocketHub</a>
+              <a className="is-size-4 navbar-item">RocketBase</a>
             </Link>
             <a
               id="burger"

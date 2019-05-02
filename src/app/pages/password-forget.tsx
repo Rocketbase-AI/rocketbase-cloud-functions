@@ -1,3 +1,4 @@
+import Head from "next/head";
 import Link from "next/link";
 import React, { Component } from "react";
 import { withFirebase } from "../components/Firebase";
@@ -7,6 +8,9 @@ import * as ROUTES from "../constants/routes";
 
 const PasswordForgetPage = () => (
   <Layout>
+    <Head>
+      <title>Reset your Password | RocketHub</title>
+    </Head>
     <PasswordForgetForm />
   </Layout>
 );
