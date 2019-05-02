@@ -7,13 +7,16 @@ import * as mixpanel from "mixpanel";
 import {
   DEFAULT_REGION,
   MODELS_COLLECTION_NAME,
+  USERS_COLLECTION_NAME,
   MODELS_SELECTION_EVENT,
   MODEL_SAVE_EVENT,
   GET_CREDENTIALS_EVENT,
   USERNAME_FIELD,
   ROCKET_NAME_FIELD,
+  LABEL_FIELD,
 } from "./constants";
 import credentials from "./credentials";
+import { rocketbase } from "./rocketbase";
 
 // Initializes Cloud Functions.
 admin.initializeApp();
@@ -71,17 +74,29 @@ export const getAvailableModels = functions
         .collection(MODELS_COLLECTION_NAME)
         .where(USERNAME_FIELD, "==", username)
         .where(ROCKET_NAME_FIELD, "==", modelName)
+        .where(LABEL_FIELD, "==", label) // if no label is given then the condition is ignored
         .get();
     } catch (e) {
       return res.status(500).send(`Internal database error.`);
     }
-    let allModels: any[] = querySnapShot.docs.map(doc => doc.data());
-    if (label) {
-      allModels = allModels.filter((modelDoc: any) => modelDoc.label === label);
-    } else {
-      allModels = allModels.filter(
-        (modelDoc: any) => modelDoc.isDefaultVersion,
+    let allModels = querySnapShot.docs.map(doc => doc.data());
+
+    // return early if no filtering needed
+    if (allModels.length <= 1) {
+      return res.status(200).json(allModels);
+    }
+    const filteredModels: any[] = allModels.filter(
+      (modelDoc: any) => modelDoc.isDefaultVersion,
+    );
+    // Check whether any model was selected as default
+    if (!filteredModels.length) {
+      // Reduce models to one with latest launchdate
+      const reducedModels = allModels.reduce((prev, curr) =>
+        prev.launchDate.seconds > curr.launchDate.seconds ? prev : curr,
       );
+      allModels = [reducedModels];
+    } else {
+      allModels = filteredModels;
     }
     return res.status(200).json(allModels);
   });
@@ -164,9 +179,10 @@ export const saveNewModel = functions
       modelName,
       family,
     });
-    const newModel = {
-      parentRef: "",
-      userRef: "",
+    // TODO: add parent and user ref later on
+    const newModel: rocketbase.Rocket = {
+      parentRef: db.doc(`${MODELS_COLLECTION_NAME}/`),
+      userRef: db.doc(`${USERS_COLLECTION_NAME}/`),
       modelName,
       username,
       family,

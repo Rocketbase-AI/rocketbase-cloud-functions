@@ -4,6 +4,7 @@ export const USERS_COLLECTION_NAME: string = "users";
 export const MODELS_COLLECTION_NAME: string = "rockets";
 export const USERNAME_FIELD: string = "username";
 export const ROCKET_NAME_FIELD: string = "name";
+export const LABEL_FIELD: string = "label";
 export const MODELS_SELECTION_EVENT: string = "SELECT_ROCKET";
 export const GET_CREDENTIALS_EVENT: string = "GET_CREDENTIALS";
 export const MODEL_SAVE_EVENT: string = "SAVE_ROCKET";
