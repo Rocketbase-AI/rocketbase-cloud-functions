@@ -7,12 +7,16 @@ import * as mixpanel from "mixpanel";
 import {
   DEFAULT_REGION,
   MODELS_COLLECTION_NAME,
+  USERS_COLLECTION_NAME,
   MODELS_SELECTION_EVENT,
   MODEL_SAVE_EVENT,
-  PYTORCH_FRAMEWORK,
   GET_CREDENTIALS_EVENT,
+  USERNAME_FIELD,
+  ROCKET_NAME_FIELD,
+  LABEL_FIELD,
 } from "./constants";
 import credentials from "./credentials";
+import { rocketbase } from "./rocketbase";
 
 // Initializes Cloud Functions.
 admin.initializeApp();
@@ -26,6 +30,8 @@ const Mixpanel = mixpanel.init("793aeec70db39b86d15260f129ec4680");
 // CORS configuration.
 const corsHandler = cors({ origin: true });
 
+/* --------------- Serving the next application --------------- */
+
 const dev = process.env.NODE_ENV !== "production";
 const app = next({
   dev,
@@ -36,6 +42,10 @@ const handle = app.getRequestHandler();
 export const nextApp = functions.https.onRequest((req, res) => {
   return app.prepare().then(() => handle(req, res));
 });
+
+/* --------------- Independent cloud functions --------------- */
+
+// Query available models for landing a rocket
 
 export const getAvailableModels = functions
   .region(DEFAULT_REGION)
@@ -48,34 +58,50 @@ export const getAvailableModels = functions
     }
     // TODO: check whether user is authenticated
     const {
-      author,
-      model,
-      version,
-    }: { author: string; model: string; version: string } = req.query;
+      username,
+      modelName,
+      label,
+    }: { username: string; modelName: string; label: string } = req.query;
 
-    if (!model || !author) {
+    if (!modelName || !username) {
       return res.status(400).send("Required request parameters missing.");
     }
-    Mixpanel.track(MODELS_SELECTION_EVENT, { author, model, version });
-    let modelSnapShot;
+    Mixpanel.track(MODELS_SELECTION_EVENT, { username, modelName, label });
+    let querySnapShot;
     // TODO: check whether authorised user actually has permission to access model
     try {
-      modelSnapShot = await db
+      querySnapShot = await db
         .collection(MODELS_COLLECTION_NAME)
-        .where("author", "==", author)
-        .where("model", "==", model)
+        .where(USERNAME_FIELD, "==", username)
+        .where(ROCKET_NAME_FIELD, "==", modelName)
+        .where(LABEL_FIELD, "==", label) // if no label is given then the condition is ignored
         .get();
     } catch (e) {
       return res.status(500).send(`Internal database error.`);
     }
-    let allModels: any[] = modelSnapShot.docs.map(doc => doc.data());
-    if (version) {
-      allModels = allModels.filter((modelDoc: any) => modelDoc.version === version);
+    let allModels = querySnapShot.docs.map(doc => doc.data());
+
+    // return early if no filtering needed
+    if (allModels.length <= 1) {
+      return res.status(200).json(allModels);
+    }
+    const filteredModels: any[] = allModels.filter(
+      (modelDoc: any) => modelDoc.isDefaultVersion,
+    );
+    // Check whether any model was selected as default
+    if (!filteredModels.length) {
+      // Reduce models to one with latest launchdate
+      const reducedModels = allModels.reduce((prev, curr) =>
+        prev.launchDate.seconds > curr.launchDate.seconds ? prev : curr,
+      );
+      allModels = [reducedModels];
     } else {
-      allModels = allModels.filter((modelDoc: any) => modelDoc.isDefaultVersion);
+      allModels = filteredModels;
     }
     return res.status(200).json(allModels);
   });
+
+// Get credentials in order to upload new rockets to Cloud Storage
 
 export const getUploadCredentials = functions
   .region(DEFAULT_REGION)
@@ -95,6 +121,8 @@ export const getUploadCredentials = functions
     return res.status(200).json(credentials);
   });
 
+// Save new models into the database from the pip package
+
 export const saveNewModel = functions
   .region(DEFAULT_REGION)
   .https.onRequest(async (req, res) => {
@@ -106,49 +134,77 @@ export const saveNewModel = functions
     }
     // TODO: check whether user is authenticated
     const {
-      author,
-      model,
-      version,
-      folderName,
-      modelFilePath,
-      isPrivate,
+      modelName,
+      username,
+      family,
+      trainingDataset,
+      isTrainable,
+      rocketRepoUrl,
+      paperUrl,
+      originRepoUrl,
+      description,
+      downloadUrl,
+      hash,
     }: {
-      author: string;
-      model: string;
-      version: string;
-      folderName: string;
-      modelFilePath: string;
-      isPrivate: boolean;
+      modelName: string;
+      username: string;
+      family: string;
+      trainingDataset: string;
+      isTrainable: boolean;
+      rocketRepoUrl: string;
+      paperUrl: string;
+      originRepoUrl: string;
+      description: string;
+      downloadUrl: string;
+      hash: string;
     } = req.body;
 
     if (
-      !model ||
-      !author ||
-      !version ||
-      !folderName ||
-      !modelFilePath ||
-      typeof isPrivate === "undefined"
+      !modelName ||
+      !username ||
+      !family ||
+      !trainingDataset ||
+      typeof isTrainable === "undefined" ||
+      !rocketRepoUrl ||
+      !paperUrl ||
+      !originRepoUrl ||
+      !description ||
+      !downloadUrl ||
+      !hash
     ) {
       return res.status(400).send("Required request parameters missing.");
     }
-    Mixpanel.track(MODEL_SAVE_EVENT, { author, model, version, isPrivate });
-    const newModel = {
-      author,
-      folderName,
-      framework: PYTORCH_FRAMEWORK,
-      model,
-      modelFilePath,
-      isPrivate,
-      version,
-      publicationDate: admin.firestore.Timestamp.fromDate(new Date()),
+    Mixpanel.track(MODEL_SAVE_EVENT, {
+      username,
+      modelName,
+      family,
+    });
+    // TODO: add parent and user ref later on
+    const newModel: rocketbase.Rocket = {
+      parentRef: db.doc(`${MODELS_COLLECTION_NAME}/`),
+      userRef: db.doc(`${USERS_COLLECTION_NAME}/`),
+      modelName,
+      username,
+      family,
+      hash,
+      launchDate: admin.firestore.Timestamp.fromDate(new Date()),
+      trainingDataset,
+      isTrainable,
+      isPrivate: false,
+      apiUrl: "",
+      rocketRepoUrl,
+      paperUrl,
+      originRepoUrl,
+      downloadUrl,
+      description,
+      label: hash,
       isDefaultVersion: false,
-      name: folderName,
     };
-    let modelRef;
+    let rocketRef;
     try {
-      modelRef = await db.collection(MODELS_COLLECTION_NAME).add(newModel);
+      rocketRef = await db.collection(MODELS_COLLECTION_NAME).add(newModel);
     } catch (e) {
       return res.status(500).send(`Internal database error.`);
     }
-    return res.status(201).json({ id: modelRef.id });
+    return res.status(201).json({ id: rocketRef.id });
   });
