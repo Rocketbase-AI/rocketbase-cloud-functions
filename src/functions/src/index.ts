@@ -27,6 +27,8 @@ const Mixpanel = mixpanel.init("793aeec70db39b86d15260f129ec4680");
 // CORS configuration.
 const corsHandler = cors({ origin: true });
 
+/* --------------- Serving the next application --------------- */
+
 const dev = process.env.NODE_ENV !== "production";
 const app = next({
   dev,
@@ -37,6 +39,10 @@ const handle = app.getRequestHandler();
 export const nextApp = functions.https.onRequest((req, res) => {
   return app.prepare().then(() => handle(req, res));
 });
+
+/* --------------- Independent cloud functions --------------- */
+
+// Query available models for landing a rocket
 
 export const getAvailableModels = functions
   .region(DEFAULT_REGION)
@@ -50,30 +56,28 @@ export const getAvailableModels = functions
     // TODO: check whether user is authenticated
     const {
       username,
-      rocket,
+      modelName,
       label,
-    }: { username: string; rocket: string; label: string } = req.query;
+    }: { username: string; modelName: string; label: string } = req.query;
 
-    if (!rocket || !username) {
+    if (!modelName || !username) {
       return res.status(400).send("Required request parameters missing.");
     }
-    Mixpanel.track(MODELS_SELECTION_EVENT, { username, rocket, label });
+    Mixpanel.track(MODELS_SELECTION_EVENT, { username, modelName, label });
     let querySnapShot;
     // TODO: check whether authorised user actually has permission to access model
     try {
       querySnapShot = await db
         .collection(MODELS_COLLECTION_NAME)
         .where(USERNAME_FIELD, "==", username)
-        .where(ROCKET_NAME_FIELD, "==", rocket)
+        .where(ROCKET_NAME_FIELD, "==", modelName)
         .get();
     } catch (e) {
       return res.status(500).send(`Internal database error.`);
     }
     let allModels: any[] = querySnapShot.docs.map(doc => doc.data());
     if (label) {
-      allModels = allModels.filter(
-        (modelDoc: any) => modelDoc.label === label,
-      );
+      allModels = allModels.filter((modelDoc: any) => modelDoc.label === label);
     } else {
       allModels = allModels.filter(
         (modelDoc: any) => modelDoc.isDefaultVersion,
@@ -81,6 +85,8 @@ export const getAvailableModels = functions
     }
     return res.status(200).json(allModels);
   });
+
+// Get credentials in order to upload new rockets to Cloud Storage
 
 export const getUploadCredentials = functions
   .region(DEFAULT_REGION)
@@ -100,6 +106,8 @@ export const getUploadCredentials = functions
     return res.status(200).json(credentials);
   });
 
+// Save new models into the database from the pip package
+
 export const saveNewModel = functions
   .region(DEFAULT_REGION)
   .https.onRequest(async (req, res) => {
@@ -111,48 +119,76 @@ export const saveNewModel = functions
     }
     // TODO: check whether user is authenticated
     const {
-      author,
-      model,
-      version,
-      folderName,
-      modelFilePath,
-      isPrivate,
+      modelName,
+      username,
+      family,
+      trainingDataset,
+      isTrainable,
+      rocketRepoUrl,
+      paperUrl,
+      originRepoUrl,
+      description,
+      downloadUrl,
+      hash,
     }: {
-      author: string;
-      model: string;
-      version: string;
-      folderName: string;
-      modelFilePath: string;
-      isPrivate: boolean;
+      modelName: string;
+      username: string;
+      family: string;
+      trainingDataset: string;
+      isTrainable: boolean;
+      rocketRepoUrl: string;
+      paperUrl: string;
+      originRepoUrl: string;
+      description: string;
+      downloadUrl: string;
+      hash: string;
     } = req.body;
 
     if (
-      !model ||
-      !author ||
-      !version ||
-      !folderName ||
-      !modelFilePath ||
-      typeof isPrivate === "undefined"
+      !modelName ||
+      !username ||
+      !family ||
+      !trainingDataset ||
+      typeof isTrainable === "undefined" ||
+      !rocketRepoUrl ||
+      !paperUrl ||
+      !originRepoUrl ||
+      !description ||
+      !downloadUrl ||
+      !hash
     ) {
       return res.status(400).send("Required request parameters missing.");
     }
-    Mixpanel.track(MODEL_SAVE_EVENT, { author, model, version, isPrivate });
+    Mixpanel.track(MODEL_SAVE_EVENT, {
+      username,
+      modelName,
+      family,
+    });
     const newModel = {
-      author,
-      folderName,
-      model,
-      modelFilePath,
-      isPrivate,
-      version,
-      publicationDate: admin.firestore.Timestamp.fromDate(new Date()),
+      parentRef: "",
+      userRef: "",
+      modelName,
+      username,
+      family,
+      hash,
+      launchDate: admin.firestore.Timestamp.fromDate(new Date()),
+      trainingDataset,
+      isTrainable,
+      isPrivate: false,
+      apiUrl: "",
+      rocketRepoUrl,
+      paperUrl,
+      originRepoUrl,
+      downloadUrl,
+      description,
+      label: hash,
       isDefaultVersion: false,
-      name: folderName,
     };
-    let modelRef;
+    let rocketRef;
     try {
-      modelRef = await db.collection(MODELS_COLLECTION_NAME).add(newModel);
+      rocketRef = await db.collection(MODELS_COLLECTION_NAME).add(newModel);
     } catch (e) {
       return res.status(500).send(`Internal database error.`);
     }
-    return res.status(201).json({ id: modelRef.id });
+    return res.status(201).json({ id: rocketRef.id });
   });
