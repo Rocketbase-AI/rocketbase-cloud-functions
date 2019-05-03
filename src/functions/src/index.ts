@@ -181,8 +181,8 @@ export const saveNewModel = functions
     });
     // TODO: add parent and user ref later on
     const newModel: rocketbase.Rocket = {
-      parentRef: db.doc(`${MODELS_COLLECTION_NAME}/`),
-      userRef: db.doc(`${USERS_COLLECTION_NAME}/`),
+      parentRef: undefined,
+      userRef: db.doc(`${USERS_COLLECTION_NAME}/evTRZXLmHYPgeIG7sHffEzGnqG13`),
       modelName,
       username,
       family,
