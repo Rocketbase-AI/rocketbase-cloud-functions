@@ -13,7 +13,6 @@ import {
   GET_CREDENTIALS_EVENT,
   USERNAME_FIELD,
   ROCKET_NAME_FIELD,
-  LABEL_FIELD,
 } from "./constants";
 import credentials from "./credentials";
 import { rocketbase } from "./rocketbase";
@@ -74,31 +73,33 @@ export const getAvailableModels = functions
         .collection(MODELS_COLLECTION_NAME)
         .where(USERNAME_FIELD, "==", username)
         .where(ROCKET_NAME_FIELD, "==", modelName)
-        .where(LABEL_FIELD, "==", label) // if no label is given then the condition is ignored
         .get();
     } catch (e) {
+      console.log(e);
       return res.status(500).send(`Internal database error.`);
     }
-    let allModels = querySnapShot.docs.map(doc => doc.data());
-
-    // return early if no filtering needed
-    if (allModels.length <= 1) {
-      return res.status(200).json(allModels);
+    let rockets = querySnapShot.docs.map(doc => doc.data());
+    if (label) {
+      rockets = rockets.filter(rocket => rocket.label === label);
     }
-    const filteredModels: any[] = allModels.filter(
-      (modelDoc: any) => modelDoc.isDefaultVersion,
+    // return early if no filtering needed
+    if (rockets.length <= 1) {
+      return res.status(200).json(rockets);
+    }
+    const filteredModels: any[] = rockets.filter(
+      modelDoc => modelDoc.isDefaultVersion,
     );
     // Check whether any model was selected as default
     if (!filteredModels.length) {
       // Reduce models to one with latest launchdate
-      const reducedModels = allModels.reduce((prev, curr) =>
+      const reducedModels = rockets.reduce((prev, curr) =>
         prev.launchDate.seconds > curr.launchDate.seconds ? prev : curr,
       );
-      allModels = [reducedModels];
+      rockets = [reducedModels];
     } else {
-      allModels = filteredModels;
+      rockets = filteredModels;
     }
-    return res.status(200).json(allModels);
+    return res.status(200).json(rockets);
   });
 
 // Get credentials in order to upload new rockets to Cloud Storage
@@ -181,8 +182,8 @@ export const saveNewModel = functions
     });
     // TODO: add parent and user ref later on
     const newModel: rocketbase.Rocket = {
-      parentRef: undefined,
-      userRef: db.doc(`${USERS_COLLECTION_NAME}/evTRZXLmHYPgeIG7sHffEzGnqG13`),
+      parentRef: null,
+      userRef: null,
       modelName,
       username,
       family,
@@ -204,6 +205,7 @@ export const saveNewModel = functions
     try {
       rocketRef = await db.collection(MODELS_COLLECTION_NAME).add(newModel);
     } catch (e) {
+      console.log(e);
       return res.status(500).send(`Internal database error.`);
     }
     return res.status(201).json({ id: rocketRef.id });

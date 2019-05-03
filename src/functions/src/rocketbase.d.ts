@@ -2,8 +2,8 @@ import * as admin from "firebase-admin";
 
 declare namespace rocketbase {
   export interface Rocket {
-    parentRef: admin.firestore.DocumentReference | undefined;
-    userRef: admin.firestore.DocumentReference | undefined;
+    parentRef: admin.firestore.DocumentReference | null;
+    userRef: admin.firestore.DocumentReference | null;
     modelName: string;
     username: string;
     family: string;
