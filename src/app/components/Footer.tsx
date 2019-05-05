@@ -19,9 +19,7 @@ const Footer = () => {
                 <h1 className="title is-3">RocketBase</h1>
               </Link>
               <div className="footer-description">
-                Bulkit is built for developers and designers. It's modular
-                approach lets you create an original landing page for your
-                brand.
+                RocketBase allows you to test Deep Learning models in a few seconds.
               </div>
             </div>
             <div>
