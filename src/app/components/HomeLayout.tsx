@@ -8,9 +8,9 @@ interface LayoutProps {
 
 const Layout = (props: LayoutProps) => (
   <div>
-    <section className="hero is-fullheight is-light-grey">
+    <section className="hero is-fullheight has-background">
       <Header />
-      <div className="hero-body">
+      <div className="hero-body has-background">
         <div className="container has-text-centered">{props.children}</div>
       </div>
       <div className="hero-foot" />
