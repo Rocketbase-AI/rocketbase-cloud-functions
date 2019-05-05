@@ -13,16 +13,18 @@ class Index extends Component<any, any> {
       <Layout>
         <div className="columns">
           <div className="column is-8 is-offset-2 has-text-centered">
-            <h1 className="is-size-2">
+            <h1 className="is-size-2 has-text-white">
               Discover and test
               <br />
               models instantly
             </h1>
-            <ul>
-              {this.props.models.map((model: any, index: number) => (
-                <ModelCard model={model} key={index} />
-              ))}
-            </ul>
+            <div className="is-flex">
+              <ul>
+                {this.props.models.map((model: any, index: number) => (
+                  <ModelCard model={model} key={index} />
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </Layout>
