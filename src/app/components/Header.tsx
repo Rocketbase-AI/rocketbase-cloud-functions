@@ -20,12 +20,12 @@ const NavigationAuth = ({ authUser }) => (
   <div className="navbar-end">
     <div className="navbar-item">
     <Link prefetch={true} href={ROUTES.HOME}>
-      <a>Dashboard</a>
+      <a className="navbar-item">Dashboard</a>
     </Link>
     </div>
     <div className="navbar-item">
     <Link href={ROUTES.ACCOUNT}>
-      <a>{authUser.username}'s Account</a>
+      <a className="navbar-item">{authUser.username}'s Account</a>
     </Link>
     </div>
     <SignOutButton />
@@ -36,22 +36,22 @@ const NavigationNonAuth = () => (
   <div className="navbar-end">
     <div className="navbar-item">
       <Link prefetch={true} href={ROUTES.SOLUTION}>
-        <a>Solution</a>
+        <a className="navbar-item">Solution</a>
       </Link>
     </div>
     <div className="navbar-item">
       <Link prefetch={true} href={ROUTES.PRICING}>
-        <a>Pricing</a>
+        <a className="navbar-item">Pricing</a>
       </Link>
     </div>
     <div className="navbar-item">
       <Link href={ROUTES.DOCS}>
-        <a>Docs</a>
+        <a className="navbar-item">Docs</a>
       </Link>
     </div>
     <div className="navbar-item">
       <Link href={ROUTES.LOG_IN}>
-        <a>Login</a>
+        <a className="navbar-item">Login</a>
       </Link>
     </div>
     <div className="navbar-item">
