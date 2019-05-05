@@ -16,7 +16,7 @@ const Footer = () => {
                 alt=""
               /> */}
               <Link href={ROUTES.LANDING}>
-                <h1 className="title is-3">RocketHub</h1>
+                <h1 className="title is-3">RocketBase</h1>
               </Link>
               <div className="footer-description">
                 Bulkit is built for developers and designers. It's modular
@@ -48,7 +48,7 @@ const Footer = () => {
             <div className="columns">
               <div className="column">
                 <ul className="footer-column">
-                  <li className="column-header">RocketHub</li>
+                  <li className="column-header">RocketBase</li>
                   <li className="column-item">
                     <Link href={ROUTES.SOLUTION}>
                       <a>Solution</a>
