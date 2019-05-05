@@ -103,14 +103,14 @@ class Firebase {
 
   users = () => this.db.collection("users");
 
-  // *** Models API ***
+  // *** Rockets API ***
 
-  model = async (uid: number) => this.db.collection("models").doc(uid).get();
+  model = async (uid: number) => this.db.collection("rockets").doc(uid).get();
 
   models = async () => {
     const snapshot: firebase.firestore.QuerySnapshot = await this.db
-      .collection("models")
-      .where("private", "==", false)
+      .collection("rockets")
+      .where("isPrivate", "==", false)
       .get();
     // const fetchModels = async () => {
     //   const models: any[] = [];
@@ -131,6 +131,7 @@ class Firebase {
     const fetchedModels = snapshot.docs.map(
       (doc: firebase.firestore.QueryDocumentSnapshot) => {
         const fetchedModel = doc.data();
+        console.error(doc.id);
         fetchedModel.id = doc.id;
         return fetchedModel;
       },
