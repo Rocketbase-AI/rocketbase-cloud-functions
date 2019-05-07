@@ -75,7 +75,7 @@ class RocketPage extends Component<any, any> {
           </div>
           <div className="column is-2">
             <div className="rocket-public-notice">
-              Trainable <img className="rocket-public-badge" src={`/static/${!this.props.rocket.isPrivate ? "success" : "error" }.svg`} alt="Public badge"/>
+              Public <img className="rocket-public-badge" src={`/static/${!this.props.rocket.isPrivate ? "success" : "error" }.svg`} alt="Public badge"/>
             </div>
           </div>
         </div>
