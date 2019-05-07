@@ -11,7 +11,9 @@ const Layout = (props: LayoutProps) => (
     <section className="hero is-fullheight has-background">
       <Header />
       <div className="hero-body has-background">
-        <div className="container has-text-centered">{props.children}</div>
+        <div className="container has-text-centered">
+          {props.children}
+         </div>
       </div>
       <div className="hero-foot" />
     </section>
