@@ -18,13 +18,15 @@ class Index extends Component<any, any> {
               <br />
               models instantly
             </h1>
-            <div className="is-flex">
+            <div className="is-flex model_cards_background">
               <ul>
                 {this.props.models.map((model: any, index: number) => (
                   <ModelCard model={model} key={index} />
                 ))}
               </ul>
             </div>
+            <img className="rockets_process" src="/static/rockets_process_illustration.svg" alt="Process Illustration" />
+            <img className="features" src="/static/HomePage/Features.svg" alt="Features" />
           </div>
         </div>
       </Layout>
