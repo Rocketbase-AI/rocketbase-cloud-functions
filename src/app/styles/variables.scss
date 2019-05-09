@@ -12,6 +12,10 @@ $muted-grey: #999;
 $smoke-white: #fcfcfc;
 $secondary: #7c4dff;
 
+$family-snippet: -apple-system, BlinkMacSystemFont, Consolas, "Segoe UI", Roboto,
+  Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+  "Segoe UI Symbol";
+
 $main: #6C4DCC;
 
 @import "node_modules/bulma/sass/utilities/initial-variables.sass";
