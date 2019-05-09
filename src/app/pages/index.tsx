@@ -1,14 +1,17 @@
 import React, { Component } from "react";
+import ReactGA from "react-ga";
 // import Link from "next/link";
 import Layout from "../components/HomeLayout";
 import ModelCard from "../components/ModelCard";
 
 class Index extends Component<any, any> {
   static async getInitialProps({}, firebase) {
+    ReactGA.initialize('UA-139331659-3');
     const models = await firebase.models();
     return { models };
   }
   render() {
+    ReactGA.pageview('/');
     return (
       <Layout>
         <div className="columns">

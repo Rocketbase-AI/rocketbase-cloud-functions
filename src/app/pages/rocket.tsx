@@ -1,8 +1,9 @@
 import Head from "next/head";
 import Link from "next/link";
 import React, { Component } from "react";
+import ReactGA from "react-ga";
 import RocketLayout from "../components/RocketLayout";
-import EXTERNAL_DOCS from "../constants/routes";
+import { EXTERNAL_DOCS } from "../constants/routes";
 
 
 class RocketPage extends Component<any, any> {
@@ -10,6 +11,7 @@ class RocketPage extends Component<any, any> {
     const { id } = context.query;
     const rocketSnapshot = await firebase.model(id);
     const rocketData = await rocketSnapshot.data();
+    ReactGA.pageview('/rocket?id='+rocketData.id);
     return { rocket: rocketData };
   }
 

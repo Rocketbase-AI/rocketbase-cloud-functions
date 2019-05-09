@@ -52,6 +52,7 @@
     "next-cookies": "^1.1.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-ga": "^2.5.7",
     "recompose": "^0.30.0",
     "redux": "^4.0.1"
   },
