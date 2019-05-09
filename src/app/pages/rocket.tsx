@@ -61,7 +61,7 @@ class RocketPage extends Component<any, any> {
             <div className="rocket-snippet subtitle is-4">
               <span>
                 Rocket.land("{this.props.rocket.username}/
-                {this.props.rocket.modelName}/{this.props.rocket.hash}")
+                {this.props.rocket.modelName}")
               </span>
             </div>
           </div>
