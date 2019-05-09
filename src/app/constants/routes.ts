@@ -11,4 +11,5 @@ export const TERMS = "/terms";
 export const PRIVACY = "/privacy";
 export const ADMIN_DETAILS = "/admin/:id";
 export const DOCS = "/documentation";
+export const EXTERNAL_DOCS = "https://mirage-tech.github.io"
 export const SOLUTION = "/solution";
