@@ -48,11 +48,11 @@ class RocketPage extends Component<any, any> {
           <title>{this.props.rocket.modelName} | RocketHub</title>
         </Head>
         <div className="columns">
-          <div className="column is-4 is-offset-1">
+          <div className="column is-offset-1">
             <div className="rocket-title title is-1 has-text-left">
-              {this.camelCase(this.props.rocket.username, "") +
+              {this.clipString(this.camelCase(this.props.rocket.username, "") +
                 "/" +
-                this.camelCase(this.props.rocket.modelName, "")}
+                this.camelCase(this.props.rocket.modelName, ""), 39)}
             </div>
           </div>
         </div>
