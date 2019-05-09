@@ -35,3 +35,5 @@ firebase-debug.log
 
 # utility file
 cors.json
+
+src/public/static
