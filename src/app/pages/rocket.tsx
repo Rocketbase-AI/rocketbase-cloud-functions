@@ -45,26 +45,6 @@ class RocketPage extends Component<any, any> {
               {this.camelCase(this.props.rocket.username, "")+" / "+this.camelCase(this.props.rocket.modelName, "") }
             </div>
           </div>
-          <div className="column is-2 is-offset-1">
-            <Link href={this.props.rocket.originRepoUrl}>
-              <a>
-                <div className="rocket-repo-button subtitle is-3 is-vcentered">
-                  <img className="rocket-repo-logo" src="/static/GithubLogo.svg" alt="Github Logo" />
-                  GitHub
-                </div>
-              </a>
-            </Link>
-          </div>
-          <div className="column is-2 is-offset-1">
-            <Link href={this.props.rocket.paperUrl}>
-              <a>
-                <div className="rocket-paper-button subtitle is-3 is-vcentered">
-                      <img className="rocket-paper-logo" src="/static/PaperLogo.svg" alt="Paper Logo"/>
-                  Paper
-                </div>
-              </a>
-            </Link>
-          </div>
         </div>
         <div className="columns">
           <div className="column is-4 is-offset-1">
@@ -81,9 +61,30 @@ class RocketPage extends Component<any, any> {
               </a>
             </Link>
           </div>
+          <div className="column is-2">
+            <Link href={this.props.rocket.originRepoUrl}>
+              <a>
+                <div className="rocket-repo-button subtitle is-4">
+                  <img className="rocket-repo-logo" src="/static/GithubLogo.svg" alt="Github Logo" />
+                  GitHub
+                </div>
+              </a>
+            </Link>
+          </div>
+          <div className="column is-2">
+            <Link href={this.props.rocket.paperUrl}>
+              <a>
+                <div className="rocket-paper-button subtitle is-4">
+                      <img className="rocket-paper-logo" src="/static/PaperLogo.svg" alt="Paper Logo"/>
+                  Paper
+                </div>
+              </a>
+            </Link>
+          </div>
         </div>
+
         <div className="columns">
-          <div className="column is-8 is-offset-2">
+          <div className="column is-8 is-offset-1">
             <div className="rocket-description-box">
               <span className="title is-3"> Description </span>
               <p className="rocket-description-body">
@@ -96,7 +97,7 @@ class RocketPage extends Component<any, any> {
           </div>
         </div>
         <div className="columns">
-          <div className="column is-3 is-offset-2">
+          <div className="column is-3 is-offset-1">
             <div className="rocket-trainable-notice subtitle is-4">
               Trainable <img className="rocket-trainable-badge" src={`/static/${this.props.rocket.isTrainable ? "success" : "error" }.svg`} alt="Trainable badge"/>
             </div>
@@ -107,7 +108,6 @@ class RocketPage extends Component<any, any> {
             </div>
           </div>
         </div>
-        
       </Layout>
     );
   }
