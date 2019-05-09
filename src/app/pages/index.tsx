@@ -6,12 +6,12 @@ import ModelCard from "../components/ModelCard";
 
 class Index extends Component<any, any> {
   static async getInitialProps({}, firebase) {
-    ReactGA.initialize('UA-139331659-3');
+    ReactGA.initialize("UA-139331659-3");
     const models = await firebase.models();
     return { models };
   }
   render() {
-    ReactGA.pageview('/');
+    ReactGA.pageview("/");
     return (
       <Layout>
         <div className="columns">
@@ -28,8 +28,16 @@ class Index extends Component<any, any> {
                 ))}
               </ul>
             </div>
-            <img className="rockets_process" src="/static/rockets_process_illustration.svg" alt="Process Illustration" />
-            <img className="features" src="/static/HomePage/Features.svg" alt="Features" />
+            <img
+              className="rockets_process"
+              src="/static/rockets_process_illustration.svg"
+              alt="Process Illustration"
+            />
+            <img
+              className="features"
+              src="/static/HomePage/Features.svg"
+              alt="Features"
+            />
           </div>
         </div>
       </Layout>

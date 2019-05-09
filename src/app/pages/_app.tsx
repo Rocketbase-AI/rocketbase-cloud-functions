@@ -75,7 +75,7 @@ class MyApp extends App<MyAppProps, any> {
     return (
       <Container>
         <Head>
-          <title>RocketHub - Discover and test latest ML models</title>
+          <title>RocketBase - Discover and deploy latest ML models</title>
         </Head>
         <FirebaseContext.Provider value={firebase}>
           <AuthUserContext.Provider value={userData}>

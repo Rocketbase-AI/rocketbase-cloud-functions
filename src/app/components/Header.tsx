@@ -32,35 +32,35 @@ const NavigationAuth = ({ authUser }) => (
   </div>
 );
 
-const NavigationNonAuth = () => (
-  <div className="navbar-end">
-    <div className="navbar-item">
-      <Link prefetch={true} href={ROUTES.SOLUTION}>
-        <a className="navbar-item">Solution</a>
-      </Link>
-    </div>
-    <div className="navbar-item">
-      <Link prefetch={true} href={ROUTES.PRICING}>
-        <a className="navbar-item">Pricing</a>
-      </Link>
-    </div>
-    <div className="navbar-item">
-      <Link href={ROUTES.DOCS}>
-        <a className="navbar-item">Docs</a>
-      </Link>
-    </div>
-    <div className="navbar-item">
-      <Link href={ROUTES.LOG_IN}>
-        <a className="navbar-item">Login</a>
-      </Link>
-    </div>
-    <div className="navbar-item">
-      <Link href={ROUTES.SIGN_UP}>
-        <a className="button is-primary">Sign Up</a>
-      </Link>
-    </div>
-  </div>
-);
+// const NavigationNonAuth = () => (
+//   <div className="navbar-end">
+//     <div className="navbar-item">
+//       <Link prefetch={true} href={ROUTES.SOLUTION}>
+//         <a className="navbar-item">Solution</a>
+//       </Link>
+//     </div>
+//     <div className="navbar-item">
+//       <Link prefetch={true} href={ROUTES.PRICING}>
+//         <a className="navbar-item">Pricing</a>
+//       </Link>
+//     </div>
+//     <div className="navbar-item">
+//       <Link href={ROUTES.DOCS}>
+//         <a className="navbar-item">Docs</a>
+//       </Link>
+//     </div>
+//     <div className="navbar-item">
+//       <Link href={ROUTES.LOG_IN}>
+//         <a className="navbar-item">Login</a>
+//       </Link>
+//     </div>
+//     <div className="navbar-item">
+//       <Link href={ROUTES.SIGN_UP}>
+//         <a className="button is-primary">Sign Up</a>
+//       </Link>
+//     </div>
+//   </div>
+// );
 
 const NavigationSimple = () => (
   <div className="navbar-end">
