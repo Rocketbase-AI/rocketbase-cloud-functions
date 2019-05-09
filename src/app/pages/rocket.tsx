@@ -70,7 +70,7 @@ class RocketPage extends Component<any, any> {
         <br />
         <div className="columns">
           <div className="column is-4 is-offset-1">
-            <a href={EXTERNAL_DOCS + "/#" + this.props.rocket.family}>
+            <a href={EXTERNAL_DOCS + "/#" + this.props.rocket.family.replace(/_/gi, "-")}>
               <div className="rocket-family subtitle is-4">
                 <h1>DOCS: {this.camelCase(this.props.rocket.family, "_")} </h1>
               </div>
