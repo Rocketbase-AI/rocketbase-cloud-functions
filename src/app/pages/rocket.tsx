@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import React, { Component } from "react";
-import Layout from "../components/HomeLayout";
+import RocketLayout from "../components/RocketLayout";
 import EXTERNAL_DOCS from "../constants/routes";
 
 
@@ -35,48 +35,51 @@ class RocketPage extends Component<any, any> {
 
   render() {
     return (
-      <Layout>
+      <RocketLayout>
         <Head>
           <title>{this.props.rocket.modelName} | RocketHub</title>
         </Head>
         <div className="columns">
-          <div className="column is-4 is-offset-1 has-text-centered">
-            <div className="rocket-title title is-1">
-              {this.camelCase(this.props.rocket.username, "")+" / "+this.camelCase(this.props.rocket.modelName, "") }
+          <div className="column is-4 is-offset-1">
+            <div className="rocket-title title is-1 has-text-left">
+              {this.camelCase(this.props.rocket.username, "")+"/"+this.camelCase(this.props.rocket.modelName, "") }
             </div>
           </div>
         </div>
         <div className="columns">
-          <div className="column is-4 is-offset-1">
+          <div className="column is-offset-1">
             <div className="rocket-snippet subtitle is-4">
-              <span>Rocket.land("{this.props.rocket.username}/{this.props.rocket.modelName}")</span>
+              <span>Rocket.land("{this.props.rocket.username}/{this.props.rocket.modelName}/{this.props.rocket.hash}")</span>
             </div>
           </div>
-          <div className="column is-3">
-            <Link href={EXTERNAL_DOCS+"/#"+this.props.rocket.family}>
-              <a>
+        </div>
+        <br/>
+        <br/>
+        <div className="columns">
+          <div className="column is-4 is-offset-1">
+              <a href={EXTERNAL_DOCS+"/#"+this.props.rocket.family}>
                 <div className="rocket-family subtitle is-4">
-                  <h1>{this.camelCase(this.props.rocket.family, "_")} </h1>
+                  <h1>DOCS: {this.camelCase(this.props.rocket.family, "_")} </h1>
                 </div>
               </a>
-            </Link>
           </div>
-          <div className="column is-2">
+          <div className="column is-2 has-text-centered">
             <Link href={this.props.rocket.originRepoUrl}>
               <a>
                 <div className="rocket-repo-button subtitle is-4">
-                  <img className="rocket-repo-logo" src="/static/GithubLogo.svg" alt="Github Logo" />
-                  GitHub
+                <object className="rocket-repo-logo" data="/static/GithubLogo.svg" type="image/svg+xml" />
+                  
+                    GitHub
                 </div>
               </a>
             </Link>
           </div>
-          <div className="column is-2">
+          <div className="column is-2 has-text-centered">
             <Link href={this.props.rocket.paperUrl}>
               <a>
                 <div className="rocket-paper-button subtitle is-4">
                       <img className="rocket-paper-logo" src="/static/PaperLogo.svg" alt="Paper Logo"/>
-                  Paper
+                    Paper
                 </div>
               </a>
             </Link>
@@ -86,7 +89,7 @@ class RocketPage extends Component<any, any> {
         <div className="columns">
           <div className="column is-8 is-offset-1">
             <div className="rocket-description-box">
-              <span className="title is-3"> Description </span>
+              <span className="has-text-left title is-3 "> Description </span>
               <p className="rocket-description-body">
                 {this.props.rocket.description ? 
                   this.props.rocket.description
@@ -97,18 +100,20 @@ class RocketPage extends Component<any, any> {
           </div>
         </div>
         <div className="columns">
-          <div className="column is-3 is-offset-1">
+          <div className="column is-offset-1">
             <div className="rocket-trainable-notice subtitle is-4">
               Trainable <img className="rocket-trainable-badge" src={`/static/${this.props.rocket.isTrainable ? "success" : "error" }.svg`} alt="Trainable badge"/>
             </div>
           </div>
-          <div className="column is-3">
+        </div>
+        <div className="columns">
+          <div className="column is-offset-1">
             <div className="rocket-public-notice subtitle is-4">
               Public <img className="rocket-public-badge" src={`/static/${!this.props.rocket.isPrivate ? "success" : "error" }.svg`} alt="Public badge"/>
             </div>
           </div>
         </div>
-      </Layout>
+      </RocketLayout>
     );
   }
 }
