@@ -4,10 +4,7 @@
 .rocket-title {
     /* Rectangle */
 
-    width: 468px;
-    height: 91px;
-    left: 103px;
-    top: 152px;
+    padding: 0.5rem;
 
     background: #FFFFFF;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -16,10 +13,7 @@
 
 .rocket-repo-button {
     /* Rectangle */
-
-    height: 91px;
-    left: 733px;
-    top: 152px;
+    padding: 1rem;
 
     background: #FFFFFF;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -33,10 +27,7 @@
 
 .rocket-paper-button {
     /* Rectangle */
-
-    height: 91px;
-    left: 1040px;
-    top: 152px;
+    padding: 1rem;
 
     background: #FFFFFF;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -48,12 +39,22 @@
     height: 32px;
 }
 
+.rocket-snippet{
+    /* Rectangle */
+
+    padding: 0.75rem;
+
+    background: #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+
+    font-family: Consolas;
+}
+
 .rocket-family {
     /* Rectangle */
 
-    height: 91px;
-    left: 103px;
-    top: 289px;
+    padding: 0.75rem;
 
     background: #FFFFFF;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -63,9 +64,8 @@
 .rocket-description-box {
     /* Rectangle */
 
-    height: 287px;
-    left: calc(50% - 1146px/2 - 44px);
-    top: 426px;
+    padding: 0.75rem;
+    min-height: 200px;
 
     background: #FAFBFD;
     border-radius: 15px;
@@ -80,9 +80,7 @@
 }
 
 .rocket-trainable-notice {
-    height: 91px;
-    left: 103px;
-    top: 779px;
+    padding: 1rem;
 
     background: #FFFFFF;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -101,9 +99,7 @@
 .rocket-public-notice {
     /* Rectangle */
 
-    height: 91px;
-    left: 472px;
-    top: 779px;
+    padding: 1rem;
 
     background: #FFFFFF;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
