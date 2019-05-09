@@ -131,7 +131,6 @@ class Firebase {
     const fetchedModels = snapshot.docs.map(
       (doc: firebase.firestore.QueryDocumentSnapshot) => {
         const fetchedModel = doc.data();
-        console.error(doc.id);
         fetchedModel.id = doc.id;
         return fetchedModel;
       },
