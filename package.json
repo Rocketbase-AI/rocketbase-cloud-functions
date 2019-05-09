@@ -14,7 +14,7 @@
     "dep:funcs": "firebase deploy --only functions",
     "clean": "rimraf \"build/functions\" && rimraf \"build/public\"",
     "build-app": "next build \"src/app\"",
-    "build-public": "cpx \"src/public/**/*.*\" \"build/public\" -C",
+    "build-public": "cpx \"src/app/static/**/*.*\" \"src/public/static\" -C && cpx \"src/public/**/*.*\" \"build/public\" -C",
     "build-functions": "tsc --project src/functions",
     "lint-app": "tslint --project src/app",
     "typecheck-app": "tsc --project src/app",
