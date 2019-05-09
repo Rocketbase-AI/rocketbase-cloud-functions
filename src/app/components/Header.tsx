@@ -11,7 +11,7 @@ const toggleStyles = () => {
 const Navigation = () => (
   <AuthUserContext.Consumer>
     {authUser =>
-      authUser ? <NavigationAuth authUser={authUser} /> : <NavigationNonAuth />
+      authUser ? <NavigationAuth authUser={authUser} /> : <NavigationSimple />
     }
   </AuthUserContext.Consumer>
 );
@@ -57,6 +57,21 @@ const NavigationNonAuth = () => (
     <div className="navbar-item">
       <Link href={ROUTES.SIGN_UP}>
         <a className="button is-primary">Sign Up</a>
+      </Link>
+    </div>
+  </div>
+);
+
+const NavigationSimple = () => (
+  <div className="navbar-end">
+    <div className="navbar-item">
+      <Link href={ROUTES.EXTERNAL_DOCS}>
+        <a className="navbar-item">Docs</a>
+      </Link>
+    </div>
+    <div className="navbar-item">
+      <Link href="">
+        <a className="button is-primary">COMING SOON</a>
       </Link>
     </div>
   </div>
