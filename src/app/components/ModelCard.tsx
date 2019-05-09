@@ -1,11 +1,11 @@
 import moment from "moment";
 import Link from "next/link";
-import Router from 'next/router';
+import Router from "next/router";
 import React, { Component } from "react";
 
 const ModelCardConst = ({ model }) => (
   <div className="box model-card has-text-left model-card-background">
-  <style jsx>
+  <style jsx={true}>
     {`
       .model-card-background {
         background: url(/static/modelCardBackgrounds/${model.family}_Background.svg);
@@ -26,7 +26,7 @@ const ModelCardConst = ({ model }) => (
       {model.trainingDataset.length < 10 ? model.trainingDataset : model.trainingDataset.substring(0, 10)+"..."}
     </p>
     <p className="model-card-task-title">
-      {model.family.replace(/_/gi, ' ').toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ')}
+      {model.family.replace(/_/gi, " ").toLowerCase().split(" ").map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(" ")}
     </p>
   </div>
 );
@@ -38,11 +38,11 @@ class ModelCard extends Component<any, any> {
 
   }
 
-  clipString=(_string, limit)=>{
-    return _string.length < limit ? _string : _string.substring(0, limit)+"...";
+  clipString=(longString, limit)=>{
+    return longString.length < limit ? longString : longString.substring(0, limit)+"...";
   }
 
-  camelCase=(_string, separator)=>{
+  camelCase=(origString, separator)=>{
     let re;
     switch (separator) {
       case "_":
@@ -55,7 +55,7 @@ class ModelCard extends Component<any, any> {
         re = /_/gi;
         break;
     }
-    return _string.replace(re, ' ').toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ');
+    return origString.replace(re, " ").toLowerCase().split(" ").map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(" ");
   }
 
 
@@ -63,14 +63,14 @@ class ModelCard extends Component<any, any> {
   render() {
     return (
     	<div className="box model-card has-text-left is-inline-flex model-card-background">
-		        <style jsx>
+		        <style jsx={true}>
 		        {`
 		        .model-card-background {
 		          background: url(/static/modelCardBackgrounds/${this.props.model.family}_Background.svg);
 		        }
 		        `}
 				    </style>
-	    	<Link href={`/rocket?id=${this.props.model.id}`} passHref>
+	    	<Link href={`/rocket?id=${this.props.model.id}`} passHref={true}>
 	    	<a className="">
 		        <p className="model-card-title">{this.clipString(this.camelCase(this.props.model.modelName, "-"), 14)}</p>
 		        <p className="model-card-publication-date">

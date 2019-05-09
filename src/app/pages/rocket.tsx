@@ -13,11 +13,11 @@ class RocketPage extends Component<any, any> {
     return { rocket: rocketData };
   }
 
-  clipString=(_string, limit)=>{
-    return _string.length < limit ? _string : _string.substring(0, limit)+"...";
+  clipString=(longString, limit)=>{
+    return longString.length < limit ? longString : longString.substring(0, limit)+"...";
   }
 
-  camelCase=(_string, separator)=>{
+  camelCase=(origString, separator)=>{
     let re;
     switch (separator) {
       case "_":
@@ -30,7 +30,7 @@ class RocketPage extends Component<any, any> {
         re = /_/gi;
         break;
     }
-    return _string.replace(re, ' ').toLowerCase().split(' ').map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(' ');
+    return origString.replace(re, " ").toLowerCase().split(" ").map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(" ");
   }
 
   render() {
