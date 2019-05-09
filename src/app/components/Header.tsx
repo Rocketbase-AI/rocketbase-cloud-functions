@@ -86,7 +86,7 @@ const Header = () => (
         >
           <div className="navbar-brand">
             <Link href="/">
-              <a className="is-size-4 navbar-item">RocketBase</a>
+              <a className="is-size-4 navbar-item">RocketBase<sup className="navbrand-superscript">BETA</sup></a>
             </Link>
             <a
               id="burger"
