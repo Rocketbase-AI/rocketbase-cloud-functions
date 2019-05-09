@@ -66,13 +66,11 @@ const NavigationSimple = () => (
   <div className="navbar-end">
     <div className="navbar-item">
       <Link href={ROUTES.EXTERNAL_DOCS}>
-        <a className="navbar-item">Docs</a>
+        <a className="button is-primary">Docs</a>
       </Link>
     </div>
     <div className="navbar-item">
-      <Link href="">
-        <a className="button is-primary">COMING SOON</a>
-      </Link>
+      <span className="navbar-item">BETA COMING SOON</span>
     </div>
   </div>
 );
