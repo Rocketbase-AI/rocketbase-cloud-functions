@@ -69,9 +69,6 @@ const NavigationSimple = () => (
         <a className="button is-primary">Docs</a>
       </Link>
     </div>
-    <div className="navbar-item">
-      <span className="navbar-item">BETA COMING SOON</span>
-    </div>
   </div>
 );
 

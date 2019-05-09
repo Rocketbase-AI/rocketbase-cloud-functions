@@ -63,13 +63,11 @@
 
 .rockets_process {
     /* rockets_process_illustration */
-    width: 1024px;
-    height: 309.7px;
-    left: calc(50% - 1024px/2 - 7px);
-    top: 903px;
+    padding-top: 50px;
 }
 
 .model_cards_background {
+    margin-top: 30px;
     background: rgba(250, 251, 253, 0.6);
     box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.15);
     border-radius: 20px;
