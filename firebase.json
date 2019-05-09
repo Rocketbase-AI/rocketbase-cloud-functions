@@ -8,7 +8,7 @@
       }
     ],
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
-    "predeploy": "npm run build-public"
+    "predeploy": ["npm run copy-static", "npm run build-public"]
   },
   "firestore": {
     "rules": "firestore.rules",
