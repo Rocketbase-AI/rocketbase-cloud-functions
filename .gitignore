@@ -1,14 +1,5 @@
-# next build files
-.next/
-
-# dependencies
-/node_modules
-
 # testing
 /coverage
-
-# production
-/build
 
 # misc
 .DS_Store
@@ -32,8 +23,3 @@ yarn-error.log*
 .firebase
 .firebaserc
 firebase-debug.log
-
-# utility file
-cors.json
-
-src/public/static

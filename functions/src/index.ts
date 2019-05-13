@@ -1,18 +1,15 @@
-import * as path from "path";
-import * as functions from "firebase-functions";
-import * as admin from "firebase-admin";
-import * as next from "next";
 import * as cors from "cors";
+import * as admin from "firebase-admin";
+import * as functions from "firebase-functions";
 import * as mixpanel from "mixpanel";
 import {
   DEFAULT_REGION,
-  MODELS_COLLECTION_NAME,
-  USERS_COLLECTION_NAME,
-  MODELS_SELECTION_EVENT,
-  MODEL_SAVE_EVENT,
   GET_CREDENTIALS_EVENT,
-  USERNAME_FIELD,
+  MODEL_SAVE_EVENT,
+  MODELS_COLLECTION_NAME,
+  MODELS_SELECTION_EVENT,
   ROCKET_NAME_FIELD,
+  USERNAME_FIELD,
 } from "./constants";
 import credentials from "./credentials";
 import { rocketbase } from "./rocketbase";
@@ -29,18 +26,7 @@ const Mixpanel = mixpanel.init("793aeec70db39b86d15260f129ec4680");
 // CORS configuration.
 const corsHandler = cors({ origin: true });
 
-/* --------------- Serving the next application --------------- */
-
-const dev = process.env.NODE_ENV !== "production";
-const app = next({
-  dev,
-  conf: { distDir: `${path.relative(process.cwd(), __dirname)}/next` },
-});
-const handle = app.getRequestHandler();
-
-export const nextApp = functions.https.onRequest((req, res) => {
-  return app.prepare().then(() => handle(req, res));
-});
+// const dev = process.env.NODE_ENV !== "production";
 
 /* --------------- Independent cloud functions --------------- */
 
@@ -176,30 +162,30 @@ export const saveNewModel = functions
       return res.status(400).send("Required request parameters missing.");
     }
     Mixpanel.track(MODEL_SAVE_EVENT, {
-      username,
-      modelName,
       family,
+      modelName,
+      username,
     });
     // TODO: add parent and user ref later on
     const newModel: rocketbase.Rocket = {
-      parentRef: null,
-      userRef: null,
-      modelName,
-      username,
+      apiUrl: "",
+      description,
+      downloadUrl,
       family,
       hash,
-      launchDate: admin.firestore.Timestamp.fromDate(new Date()),
-      trainingDataset,
-      isTrainable,
-      isPrivate: false,
-      apiUrl: "",
-      rocketRepoUrl,
-      paperUrl,
-      originRepoUrl,
-      downloadUrl,
-      description,
-      label: hash,
       isDefaultVersion: false,
+      isPrivate: false,
+      isTrainable,
+      label: hash,
+      launchDate: admin.firestore.Timestamp.fromDate(new Date()),
+      modelName,
+      originRepoUrl,
+      paperUrl,
+      parentRef: null,
+      rocketRepoUrl,
+      trainingDataset,
+      userRef: null,
+      username,
     };
     let rocketRef;
     try {
