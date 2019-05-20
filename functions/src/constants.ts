@@ -9,7 +9,7 @@ export const MODELS_SELECTION_EVENT: string = "SELECT_ROCKET";
 export const GET_CREDENTIALS_EVENT: string = "GET_CREDENTIALS";
 export const MODEL_SAVE_EVENT: string = "SAVE_ROCKET";
 export const ML_FRAMEWORKS: object = {
+  KERAS: "Keras",
   PYTORCH: "PyTorch",
   TF: "TensorFlow",
-  KERAS: "Keras",
 };

@@ -1,19 +1,15 @@
-import * as path from "path";
-import * as functions from "firebase-functions";
-import * as admin from "firebase-admin";
-import * as next from "next";
 import * as cors from "cors";
+import * as admin from "firebase-admin";
+import * as functions from "firebase-functions";
 import * as mixpanel from "mixpanel";
 import {
   DEFAULT_REGION,
-  MODELS_COLLECTION_NAME,
-  USERS_COLLECTION_NAME,
-  MODELS_SELECTION_EVENT,
-  MODEL_SAVE_EVENT,
   GET_CREDENTIALS_EVENT,
-  USERNAME_FIELD,
+  MODEL_SAVE_EVENT,
+  MODELS_COLLECTION_NAME,
+  MODELS_SELECTION_EVENT,
   ROCKET_NAME_FIELD,
-  LABEL_FIELD,
+  USERNAME_FIELD,
 } from "./constants";
 import credentials from "./credentials";
 import { rocketbase } from "./rocketbase";
@@ -30,18 +26,7 @@ const Mixpanel = mixpanel.init("793aeec70db39b86d15260f129ec4680");
 // CORS configuration.
 const corsHandler = cors({ origin: true });
 
-/* --------------- Serving the next application --------------- */
-
-const dev = process.env.NODE_ENV !== "production";
-const app = next({
-  dev,
-  conf: { distDir: `${path.relative(process.cwd(), __dirname)}/next` },
-});
-const handle = app.getRequestHandler();
-
-export const nextApp = functions.https.onRequest((req, res) => {
-  return app.prepare().then(() => handle(req, res));
-});
+// const dev = process.env.NODE_ENV !== "production";
 
 /* --------------- Independent cloud functions --------------- */
 
@@ -74,31 +59,33 @@ export const getAvailableModels = functions
         .collection(MODELS_COLLECTION_NAME)
         .where(USERNAME_FIELD, "==", username)
         .where(ROCKET_NAME_FIELD, "==", modelName)
-        .where(LABEL_FIELD, "==", label) // if no label is given then the condition is ignored
         .get();
     } catch (e) {
+      console.log(e);
       return res.status(500).send(`Internal database error.`);
     }
-    let allModels = querySnapShot.docs.map(doc => doc.data());
-
-    // return early if no filtering needed
-    if (allModels.length <= 1) {
-      return res.status(200).json(allModels);
+    let rockets = querySnapShot.docs.map(doc => doc.data());
+    if (label) {
+      rockets = rockets.filter(rocket => rocket.label === label);
     }
-    const filteredModels: any[] = allModels.filter(
-      (modelDoc: any) => modelDoc.isDefaultVersion,
+    // return early if no filtering needed
+    if (rockets.length <= 1) {
+      return res.status(200).json(rockets);
+    }
+    const filteredModels: any[] = rockets.filter(
+      modelDoc => modelDoc.isDefaultVersion,
     );
     // Check whether any model was selected as default
     if (!filteredModels.length) {
       // Reduce models to one with latest launchdate
-      const reducedModels = allModels.reduce((prev, curr) =>
+      const reducedModels = rockets.reduce((prev, curr) =>
         prev.launchDate.seconds > curr.launchDate.seconds ? prev : curr,
       );
-      allModels = [reducedModels];
+      rockets = [reducedModels];
     } else {
-      allModels = filteredModels;
+      rockets = filteredModels;
     }
-    return res.status(200).json(allModels);
+    return res.status(200).json(rockets);
   });
 
 // Get credentials in order to upload new rockets to Cloud Storage
@@ -175,35 +162,36 @@ export const saveNewModel = functions
       return res.status(400).send("Required request parameters missing.");
     }
     Mixpanel.track(MODEL_SAVE_EVENT, {
-      username,
-      modelName,
       family,
+      modelName,
+      username,
     });
     // TODO: add parent and user ref later on
     const newModel: rocketbase.Rocket = {
-      parentRef: db.doc(`${MODELS_COLLECTION_NAME}/`),
-      userRef: db.doc(`${USERS_COLLECTION_NAME}/`),
-      modelName,
-      username,
+      apiUrl: "",
+      description,
+      downloadUrl,
       family,
       hash,
-      launchDate: admin.firestore.Timestamp.fromDate(new Date()),
-      trainingDataset,
-      isTrainable,
-      isPrivate: false,
-      apiUrl: "",
-      rocketRepoUrl,
-      paperUrl,
-      originRepoUrl,
-      downloadUrl,
-      description,
-      label: hash,
       isDefaultVersion: false,
+      isPrivate: false,
+      isTrainable,
+      label: hash,
+      launchDate: admin.firestore.Timestamp.fromDate(new Date()),
+      modelName,
+      originRepoUrl,
+      paperUrl,
+      parentRef: null,
+      rocketRepoUrl,
+      trainingDataset,
+      userRef: null,
+      username,
     };
     let rocketRef;
     try {
       rocketRef = await db.collection(MODELS_COLLECTION_NAME).add(newModel);
     } catch (e) {
+      console.log(e);
       return res.status(500).send(`Internal database error.`);
     }
     return res.status(201).json({ id: rocketRef.id });
