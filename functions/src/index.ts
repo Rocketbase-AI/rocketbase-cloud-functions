@@ -46,13 +46,27 @@ export const getAvailableModels = functions
       username,
       modelName,
       label,
-    }: { username: string; modelName: string; label: string } = req.query;
+      token,
+    }: {
+      username: string;
+      modelName: string;
+      label: string;
+      token: string;
+    } = req.query;
 
+    if (!token) {
+      return res.status(401).send("Authentication token missing.");
+    }
     if (!modelName || !username) {
       return res.status(400).send("Required request parameters missing.");
     }
-    Mixpanel.track(MODELS_SELECTION_EVENT, { username, modelName, label });
-    let querySnapShot;
+    Mixpanel.track(MODELS_SELECTION_EVENT, {
+      label,
+      modelName,
+      token,
+      username,
+    });
+    let querySnapShot: admin.firestore.QuerySnapshot;
     // TODO: check whether authorised user actually has permission to access model
     try {
       querySnapShot = await db
@@ -102,7 +116,7 @@ export const getUploadCredentials = functions
     const { token } = req.query;
 
     if (!token) {
-      return res.status(400).send("Authentication token missing.");
+      return res.status(401).send("Authentication token missing.");
     }
     Mixpanel.track(GET_CREDENTIALS_EVENT, { token });
     return res.status(200).json(credentials);
@@ -187,7 +201,7 @@ export const saveNewModel = functions
       userRef: null,
       username,
     };
-    let rocketRef;
+    let rocketRef: admin.firestore.DocumentReference;
     try {
       rocketRef = await db.collection(MODELS_COLLECTION_NAME).add(newModel);
     } catch (e) {
